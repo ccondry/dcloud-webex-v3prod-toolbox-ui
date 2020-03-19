@@ -79,10 +79,10 @@
           </b-collapse>
           <!-- /Brand -->
 
-          <!-- Template ID -->
+          <!-- Chat -->
           <b-collapse class="content card">
             <div slot="trigger" slot-scope="props" class="card-header">
-              <p class="card-header-title">Template ID</p>
+              <p class="card-header-title">Chat</p>
               <a class="card-header-icon">
                 <b-icon :icon="props.open ? 'menu-down' : 'menu-up'" />
               </a>
@@ -106,7 +106,7 @@
               <!-- /Save Button -->
             </div>
           </b-collapse>
-          <!-- /Phone -->
+          <!-- /Chat -->
 
           <!-- Advanced -->
           <b-collapse class="content card" :open="false">

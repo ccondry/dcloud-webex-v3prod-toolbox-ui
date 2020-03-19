@@ -1,13 +1,15 @@
 import app from './app'
 import menu from './menu'
 import auth from './auth'
-import cjp from './cjp'
+import dcloud from './dcloud'
 import user from './user'
+import endpoints from './endpoints'
 
 export default {
   app,
   menu,
   auth,
-  cjp,
-  user
+  dcloud,
+  user,
+  endpoints
 }

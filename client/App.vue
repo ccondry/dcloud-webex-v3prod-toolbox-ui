@@ -56,11 +56,10 @@ export default {
     console.log('checking login...')
     await this.checkLogin()
     console.log('checking login done.')
-    // console.log('getting endpoints...')
-    // await this.getEndpoints()
-    console.log('getting endpoints done.')
     // load current user data from database
     await this.loadUser(false)
+    // get dcloud instant demo instance info
+    await this.getInstance(false)
   },
 
   async mounted () {
@@ -81,7 +80,9 @@ export default {
       'toggleSidebar',
       'checkLogin',
       'getEndpoints',
-      'loadUser'
+      'loadUser',
+      'getInstance',
+      'getSession'
     ])
   },
   watch: {

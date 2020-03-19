@@ -32,7 +32,7 @@ module.exports = merge(baseWebpackConfig, {
     }),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      title: 'CWCC TSA Customization',
+      title: 'Webex Contact Center v3 Customization',
       template: 'index.html',
       inject: true,
       favicon: 'client/assets/logo.png'

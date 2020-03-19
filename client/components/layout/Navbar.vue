@@ -2,16 +2,16 @@
   <section class="hero is-bold app-navbar animated" :class="{ slideInDown: show, slideOutDown: !show }">
     <div class="hero-head">
       <div class="columns">
-        <div class="column is-4">
+        <div class="column is-3">
         </div>
-        <div class="column is-4">
+        <div class="column is-6">
           <p class="level-item has-text-centered">
               <a href="/">dCloud Toolbox</a>
               &nbsp;-
-              CWCC TSA Demo Customization
+              Webex Contact Center v3 Demo Customization
           </p>
         </div>
-        <div class="column is-4">
+        <div class="column is-3">
           <div v-if="authenticated" class="level-right">
             {{ user.username }}
             &nbsp;

@@ -45,24 +45,6 @@ const mutations = {
   }
 }
 
-// const endpoint = process.env.NODE_ENV === 'production' ? '/api/v1/cwcc-tsa/endpoints' : 'http://localhost:3046/api/v1/cwcc-tsa/endpoints'
-//
-// const actions = {
-//   async getEndpoints ({getters, commit, dispatch}, showNotification = true) {
-//     dispatch('setLoading', {group: 'app', type: 'endpoints', value: true})
-//     try {
-//       const response = await load(getters.jwt, endpoint)
-//       commit(types.SET_ENDPOINTS, response.data)
-//       // dispatch('successNotification', `Successfully loaded endpoints`)
-//     } catch (e) {
-//       console.error(`error during GET endpoints`, e)
-//       dispatch('errorNotification', {title: `Failed to GET endpoints`, error: e})
-//     } finally {
-//       dispatch('setLoading', {group: 'app', type: 'endpoints', value: false})
-//     }
-//   }
-// }
-
 export default {
   state,
   // actions,

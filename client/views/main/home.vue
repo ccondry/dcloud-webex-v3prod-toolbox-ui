@@ -79,10 +79,10 @@
           </b-collapse>
           <!-- /Brand -->
 
-          <!-- Phone -->
+          <!-- Template ID -->
           <b-collapse class="content card">
             <div slot="trigger" slot-scope="props" class="card-header">
-              <p class="card-header-title">Phone Number</p>
+              <p class="card-header-title">Template ID</p>
               <a class="card-header-icon">
                 <b-icon :icon="props.open ? 'menu-down' : 'menu-up'" />
               </a>
@@ -92,12 +92,11 @@
             </div>
             <div class="card-content" v-else>
               <p>
-                This is the phone number that will be displayed in the Brand
-                and Cumulus websites.
+                This is the your chat template ID created by the Webex Control Hub.
               </p>
-              <b-field label="Demo Phone Number"
-              message="Include + and country code, with numbers only (no spaces, dashes, etc.)">
-                <b-input v-model="model.phone" placeholder="+15551112222" />
+              <b-field label="Template ID">
+                <b-input v-model="model.templateId"
+                :placeholder="defaults.chat.templateId"></b-input>
               </b-field>
               <!-- Save Button -->
               <b-field>
@@ -131,23 +130,19 @@
               </b-field>
               <b-field label="Cisco App ID">
                 <b-input v-model="model.CiscoAppId"
-                placeholder="cisco-chat-bubble-app"></b-input>
+                :placeholder="defaults.chat.CiscoAppId"></b-input>
               </b-field>
               <b-field label="DC">
                 <b-input v-model="model.DC"
-                placeholder="appstaging.ciscoccservice.com"></b-input>
+                :placeholder="defaults.chat.DC"></b-input>
               </b-field>
               <b-field label="App Prefix">
                 <b-input v-model="model.appPrefix"
-                placeholder="bts"></b-input>
+                :placeholder="defaults.appPrefix"></b-input>
               </b-field>
               <b-field label="Org ID">
                 <b-input v-model="model.orgId"
-                placeholder="83f66514-200c-47cd-8310-4a5711e7b356"></b-input>
-              </b-field>
-              <b-field label="Template ID">
-                <b-input v-model="model.templateId"
-                placeholder="ce28a900-a8bc-11e9-9dce-53872d5a6b64"></b-input>
+                :placeholder="defaults.chat.orgId"></b-input>
               </b-field>
               <!-- Save Button -->
               <b-field>
@@ -239,6 +234,7 @@ export default {
     ...mapGetters([
       'loading',
       'working',
+      'defaults',
       'user',
       'verticals',
       'demoConfig',

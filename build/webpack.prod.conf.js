@@ -51,7 +51,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      title: 'CWCC TSA Customization',
+      title: 'Webex Contact Center v3 Customization',
       filename: process.env.NODE_ENV === 'testing'
         ? 'index.html'
         : config.build.index,

@@ -1,4 +1,5 @@
 import * as types from '../mutation-types'
+import defaults from '../../defaults'
 
 const state = {
   user: {}
@@ -9,22 +10,26 @@ const getters = {
 }
 
 const mutations = {
-  [types.SET_USER] (state, data, rootState) {
+  [types.SET_USER] (state, data) {
     // console.log('rootState:', this.state)
     const demoId = this.state.demoConfigId
-    // make sure objects exist in user data
+    // make sure parent objects exist in user data
     data.demo = data.demo || {}
     data.demo[demoId] = data.demo[demoId] || {}
 
-    // set default values, if not set
-    if (typeof data.demo[demoId].async !== 'boolean') {
-      data.demo[demoId].async = true
+    try {
+      // set default values from root state, if not set in user's demo config
+      if (typeof data.demo[demoId].async !== 'boolean') {
+        data.demo[demoId].async = defaults.chat.async
+      }
+      data.demo[demoId].CiscoAppId = data.demo[demoId].CiscoAppId || defaults.chat.CiscoAppId
+      data.demo[demoId].DC = data.demo[demoId].DC || defaults.chat.DC
+      data.demo[demoId].appPrefix = data.demo[demoId].appPrefix || defaults.chat.appPrefix
+      data.demo[demoId].orgId = data.demo[demoId].orgId || defaults.chat.orgId
+      data.demo[demoId].templateId = data.demo[demoId].templateId || defaults.chat.templateId
+    } catch (e) {
+      console.log('failed to assign values to demo config:', e)
     }
-    data.demo[demoId].CiscoAppId = data.demo[demoId].CiscoAppId || 'cisco-chat-bubble-app'
-    data.demo[demoId].DC = data.demo[demoId].DC || 'appstaging.ciscoccservice.com'
-    data.demo[demoId].appPrefix = data.demo[demoId].appPrefix || 'bts'
-    data.demo[demoId].orgId = data.demo[demoId].orgId || '83f66514-200c-47cd-8310-4a5711e7b356'
-    data.demo[demoId].templateId = data.demo[demoId].templateId || 'ce28a900-a8bc-11e9-9dce-53872d5a6b64'
 
     // save to state
     state.user = data

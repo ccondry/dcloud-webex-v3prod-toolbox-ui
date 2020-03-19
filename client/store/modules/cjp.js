@@ -9,10 +9,10 @@ const getters = {
   verticals: state => state.verticals,
   demoConfig: state => state.demoConfig,
   brandDemoLink (state, getters) {
-    return `https://mm-brand.cxdemo.net?session=TSA&datacenter=CWCC&userId=${getters.user.id}`
+    return `https://mm-brand.cxdemo.net?session=v3prod&datacenter=webex&userId=${getters.user.id}`
   },
   cumulusDemoLink (state, getters) {
-    return `https://mm.cxdemo.net?session=TSA&datacenter=CWCC&userId=${getters.user.id}`
+    return `https://mm.cxdemo.net?session=v3prod&datacenter=webex&userId=${getters.user.id}`
   }
 }
 

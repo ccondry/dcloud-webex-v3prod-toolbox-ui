@@ -1,5 +1,5 @@
 import lazyLoading from './lazyLoading'
-const base = '/cwcc-tsa/main'
+const base = '/webex-v3prod/main'
 
 export default {
   name: 'Main',

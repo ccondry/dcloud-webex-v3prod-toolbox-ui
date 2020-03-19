@@ -9,7 +9,8 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'assets',
-    assetsPublicPath: '/cwcc-tsa/',
+    // important - this must match the nginx config that points to these files
+    assetsPublicPath: '/webex-v3prod/',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -20,7 +21,8 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: process.env.DEV_PORT || 8092,
+    // the HTTP port used by the webpack development environment
+    port: process.env.DEV_PORT || 8094,
     autoOpenBrowser: true,
     assetsSubDirectory: 'assets',
     assetsPublicPath: '/',

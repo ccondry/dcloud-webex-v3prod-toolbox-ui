@@ -15,7 +15,7 @@ const router = new Router({
     ...generateRoutesFromMenu(menuModule.state.items),
     {
       path: '*',
-      redirect: '/cwcc-tsa/main/home'
+      redirect: '/webex-v3prod/main/home'
     }
   ]
 })

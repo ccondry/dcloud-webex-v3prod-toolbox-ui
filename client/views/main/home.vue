@@ -92,7 +92,7 @@
             </div>
             <div class="card-content" v-else>
               <p>
-                This is the your chat template ID created by the Webex Control Hub.
+                This is your chat template ID created by the Webex Control Hub.
               </p>
               <b-field label="Template ID">
                 <b-input v-model="model.templateId"

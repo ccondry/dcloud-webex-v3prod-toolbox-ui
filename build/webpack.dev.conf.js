@@ -32,10 +32,11 @@ module.exports = merge(baseWebpackConfig, {
     }),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      title: 'Webex Contact Center v3 Customization',
+      title: 'Webex Contact Center v3',
       template: 'index.html',
       inject: true,
-      favicon: 'client/assets/logo.png'
+      favicon: 'client/assets/logo.png',
+      environment: 'development'
     })
   ]
 })

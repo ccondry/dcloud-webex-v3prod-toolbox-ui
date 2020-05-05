@@ -4,7 +4,6 @@
     <b-loading :is-full-page="true" :active="loading.app.endpoints" :can-cancel="false"></b-loading>
     <navbar :show="true" :menu-filter.sync="menuFilter"></navbar>
     <div v-if="authenticated && endpoints">
-      <sidebar :show="sidebar.opened && !sidebar.hidden" :menu-filter="menuFilter"></sidebar>
       <app-main></app-main>
     </div>
     <!-- <footer-bar></footer-bar> -->
@@ -13,7 +12,7 @@
 
 <script>
 import NprogressContainer from 'vue-nprogress/src/NprogressContainer'
-import { Navbar, Sidebar, AppMain } from 'components/layout/'
+import { Navbar, AppMain } from 'components/layout/'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -25,7 +24,6 @@ export default {
 
   components: {
     Navbar,
-    Sidebar,
     AppMain,
     NprogressContainer
   },
@@ -58,8 +56,12 @@ export default {
     console.log('checking login done.')
     // load current user data from database
     await this.loadUser(false)
-    // get dcloud instant demo instance info
+    // load current user provision info from database
+    await this.getProvision(false)
+    // get dcloud instant demo instance info from database
     await this.getInstance(false)
+    // get dCloud session information, like phone numbers
+    await this.getSession(false)
   },
 
   async mounted () {
@@ -70,7 +72,8 @@ export default {
       'sidebar',
       'authenticated',
       'loading',
-      'endpoints'
+      'endpoints',
+      'provision'
     ])
   },
 
@@ -82,7 +85,8 @@ export default {
       'getEndpoints',
       'loadUser',
       'getInstance',
-      'getSession'
+      'getSession',
+      'getProvision'
     ])
   },
   watch: {

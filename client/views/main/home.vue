@@ -1,14 +1,65 @@
 <template>
   <div>
+    <!-- <pre>
+      {{ dcloudSession }}
+    </pre> -->
 
+    <div v-if="loading.user.provision">
+      <div class="tile is-ancestor">
+        <div class="tile is-parent is-12">
+          <article class="tile is-child box">
+            <h1 class="title">Loading...</h1>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="tile is-ancestor" v-if="!loading.user.provision && !isProvisioned && !hasRequestedProvision">
+      <!-- user not provisioned - show provision button -->
+      <div class="tile is-parent is-12">
+        <article class="tile is-child box">
+          <h1 class="title">Start</h1>
+          <b-field>
+            <p>
+              Your account is not provisioned for this demo yet. Would you like
+              to provision it now?
+            </p>
+          </b-field>
+          <b-field>
+            <button class="button is-success" @click.prevent="clickProvision" :disabled="working.user.provision">
+              {{ working.user.provision ? 'Working...' : 'Yes, Provision Me' }}
+            </button>
+          </b-field>
+        </article>
+      </div>
+    </div>
+
+    <div class="tile is-ancestor" v-if="!loading.user.provision && hasRequestedProvision">
+      <!-- user not provisioned - show provision button -->
+      <div class="tile is-parent is-12">
+        <article class="tile is-child box">
+          <h1 class="title">Provision In Progress</h1>
+          <b-field>
+            <p>
+              Your account is currently marked for provisioning. Please allow 
+              24-48 hours for your account to be ready. We will notify you via
+              Webex Teams when your account is ready, and this page will
+              change to show your account details.
+            </p>
+          </b-field>
+          <!-- <b-field>
+            <button class="button is-success" @click.prevent="clickProvision" :disabled="working.user.provision">
+              {{ working.user.provision ? 'Working...' : 'Yes, Provision Me' }}
+            </button>
+          </b-field> -->
+        </article>
+      </div>
+    </div>
+    
     <!-- Demo Website config -->
-    <div class="tile is-ancestor">
+    <div class="tile is-ancestor" v-if="!loading.user.provision && isProvisioned">
       <div class="tile is-parent is-vertical">
         <article class="tile is-child box">
-
-          <!-- <h1 class="title">
-            Demo Website
-          </h1> -->
 
           <!-- Brand -->
           <b-collapse class="content card">
@@ -24,17 +75,28 @@
             <div class="card-content" v-else>
               <div class="select">
                 <select class="input" v-model="model.vertical" @change="verticalChanged">
-                  <option value="" disabled selected>{{ loading.dcloud.vertical ? 'Loading...' : 'Choose Your Demo Vertical' }}</option>
-                  <option v-for="brand in systemBrands" :value="brand.id">{{ `${brand.name} (${brand.id})` }}</option>
+                  <option value="" disabled selected>
+                    {{ loading.dcloud.vertical ? 'Loading...' : 'Choose Your Demo Vertical' }}
+                  </option>
+                  <option v-for="(brand, index) in systemBrands" :value="brand.id" :key="brand.id">
+                    {{ `${brand.name} (${brand.id})` }}
+                  </option>
                   <option disabled>-----------------------------------------</option>
-                  <option v-for="brand in userBrands" :value="brand.id" v-if="brandFilter === 'all'">{{ `${brand.name} (${brand.id})` }}</option>
-                  <option v-for="brand in myBrands" :value="brand.id" v-if="brandFilter === 'mine'">{{ `${brand.name} (${brand.id})` }}</option>
-                  <option v-for="brand in filteredSortedBrands" :value="brand.id" v-if="brandFilter === 'other'">{{ `${brand.name} (${brand.id})` }}</option>
+                  <option v-for="(brand, index) in userBrands" :value="brand.id" :key="brand.id">
+                    {{ `${brand.name} (${brand.id})` }}
+                  </option>
+                  <option v-for="(brand, index) in myBrands" :value="brand.id" :key="brand.id">
+                    {{ `${brand.name} (${brand.id})` }}
+                  </option>
+                  <option v-for="(brand, index) in filteredSortedBrands" :value="brand.id" :key="brand.id">
+                    {{ `${brand.name} (${brand.id})` }}
+                  </option>
                 </select>
               </div>
               &nbsp;
               <button class="button is-success" @click="clickGo">Go to Demo Website</button>
               &nbsp;
+              <span style="font-size: 1.3em;">Or for quick access, call {{ demoNumber }}</span>
               <b-field style="margin-top: 6px;">
                 <b-checkbox v-model="showMore">Show More</b-checkbox>
               </b-field>
@@ -79,39 +141,10 @@
           </b-collapse>
           <!-- /Brand -->
 
-          <!-- Chat -->
-          <b-collapse class="content card">
-            <div slot="trigger" slot-scope="props" class="card-header">
-              <p class="card-header-title">Chat</p>
-              <a class="card-header-icon">
-                <b-icon :icon="props.open ? 'menu-down' : 'menu-up'" />
-              </a>
-            </div>
-            <div class="card-content" v-if="loading.app.user">
-              <b-loading :is-full-page="false" :active="loading.app.user" :can-cancel="false"></b-loading>
-            </div>
-            <div class="card-content" v-else>
-              <p>
-                This is your chat template ID created by the Webex Control Hub.
-              </p>
-              <b-field label="Template ID">
-                <b-input v-model="model.templateId"
-                :placeholder="defaults.chat.templateId"></b-input>
-              </b-field>
-              <!-- Save Button -->
-              <b-field>
-                <button type="button" class="button is-success"
-                @click.prevent="clickSave" :disabled="disableSave">Save</button>
-              </b-field>
-              <!-- /Save Button -->
-            </div>
-          </b-collapse>
-          <!-- /Chat -->
-
           <!-- Advanced -->
-          <b-collapse class="content card" :open="false">
+          <b-collapse class="content card" :open="false" v-if="user.admin">
             <div slot="trigger" slot-scope="props" class="card-header">
-              <p class="card-header-title">Advanced Configuration</p>
+              <p class="card-header-title">Admin Configuration</p>
               <a class="card-header-icon">
                 <b-icon :icon="props.open ? 'menu-down' : 'menu-up'" />
               </a>
@@ -120,29 +153,34 @@
               <b-loading :is-full-page="false" :active="loading.dcloud.vertical" :can-cancel="false"></b-loading>
             </div>
             <div class="card-content" v-else>
-              <p>
-                Cisco Webex Contact Center chat is connected using the Org ID and Template ID,
-                which can be found in the code snipped generated from Webex
-                control hub.
-              </p>
-              <b-field label="Async">
-                <b-switch v-model="model.async"></b-switch>
+              <b-field label="Vertical ID">
+                <b-input v-model="model.vertical"></b-input>
               </b-field>
-              <b-field label="Cisco App ID">
-                <b-input v-model="model.CiscoAppId"
-                :placeholder="defaults.chat.CiscoAppId"></b-input>
+              <b-field label="Voice Queue ID">
+                <b-input v-model="model.queueId"></b-input>
+              </b-field>
+              <b-field label="Chat Template ID">
+                <b-input v-model="model.templateId"
+                :placeholder="defaults.chat.templateId"></b-input>
+              </b-field>
+              <b-field label="Org ID">
+                <b-input v-model="model.orgId"
+                :placeholder="defaults.chat.orgId"></b-input>
               </b-field>
               <b-field label="DC">
                 <b-input v-model="model.DC"
                 :placeholder="defaults.chat.DC"></b-input>
               </b-field>
+              <b-field label="Cisco App ID">
+                <b-input v-model="model.CiscoAppId"
+                :placeholder="defaults.chat.CiscoAppId"></b-input>
+              </b-field>
               <b-field label="App Prefix">
                 <b-input v-model="model.appPrefix"
                 :placeholder="defaults.appPrefix"></b-input>
               </b-field>
-              <b-field label="Org ID">
-                <b-input v-model="model.orgId"
-                :placeholder="defaults.chat.orgId"></b-input>
+              <b-field label="Async">
+                <b-switch v-model="model.async"></b-switch>
               </b-field>
               <!-- Save Button -->
               <b-field>
@@ -153,7 +191,6 @@
             </div>
           </b-collapse>
           <!-- /Advanced -->
-
 
         </article>
       </div>
@@ -182,8 +219,12 @@ export default {
       'saveDemoConfig',
       'loadVerticals',
       'loadUser',
-      'loadReasons'
+      'loadReasons',
+      'provisionUser'
     ]),
+    clickProvision () {
+      this.provisionUser()
+    },
     async confirmSaveDemoConfig ({data}) {
       console.log('confirmSaveDemoConfig', data)
       await this.saveDemoConfig({data})
@@ -240,8 +281,36 @@ export default {
       'demoConfig',
       'brandDemoLink',
       'cumulusDemoLink',
-      'demoConfigId'
+      'demoConfigId',
+      'dcloudSession',
+      'isProvisioned',
+      'hasRequestedProvision',
+      'provision'
     ]),
+    demoNumber () {
+      try {
+        switch (this.model.vertical) {
+          case 'city':
+          case 'city-no-bot':
+            return this.dcloudSession.dids.DID5
+          case 'healthcare':
+          case 'healthcare-no-bot':
+            return this.dcloudSession.dids.DID9
+          case 'utility':
+          case 'utility-no-bot':
+            return this.dcloudSession.dids.DID10
+          case 'finance':
+          case 'finance-no-bot':
+            return this.dcloudSession.dids.DID7
+          case 'travel':
+          case 'travel-no-bot':
+            return this.dcloudSession.dids.DID8
+          default: return this.dcloudSession.dids.DID7
+        }
+      } catch (e) {
+        return ''
+      }
+    },
     disableSave () {
       return false
     },
@@ -281,14 +350,26 @@ export default {
       return this.sortedBrands.filter(v => !v.owner || v.owner === 'system' || v.owner === null)
     },
     userBrands () {
-      return this.sortedBrands.filter(v => v.owner && v.owner !== 'system' && v.owner !== null)
+      if (this.brandFilter === 'all') {
+        return this.sortedBrands.filter(v => v.owner && v.owner !== 'system' && v.owner !== null)
+      } else {
+        return []
+      }
     },
     myBrands () {
-      return this.sortedBrands.filter(v => v.owner === this.user.username)
+      if (this.brandFilter === 'mine') {
+        return this.sortedBrands.filter(v => v.owner === this.user.username)
+      } else {
+        return []
+      }
     },
     filteredSortedBrands () {
-      // filter to only show the brands owned by specified user
-      return this.sortedBrands.filter(v => v.owner === this.ownerFilter)
+      if (this.brandFilter === 'other') {
+        // filter to only show the brands owned by specified user
+        return this.sortedBrands.filter(v => v.owner === this.ownerFilter)
+      } else {
+        return []
+      }
     },
     vertical () {
       return this.model.vertical

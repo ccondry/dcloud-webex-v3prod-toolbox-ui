@@ -5,7 +5,6 @@ export const sidebar = state => state.app.sidebar
 export const effect = state => state.app.effect
 export const menuitems = state => state.menu.items
 export const authEnabled = () => true
-export const instance = state => state.app.instance
 export const loading = state => state.loading
 export const working = state => state.working
 export const defaults = state => state.defaults

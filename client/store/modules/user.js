@@ -2,11 +2,34 @@ import * as types from '../mutation-types'
 import defaults from '../../defaults'
 
 const state = {
-  user: {}
+  user: {},
+  provision: {}
 }
 
 const getters = {
-  user: state => state.user
+  user: state => state.user,
+  // the provision info for this user for this demo
+  provision: state => {
+    try {
+      return state.provision || {}
+    } catch (e) {
+      return {}
+    }
+  },
+  // is user provisioned and ready to use this demo?
+  isProvisioned: (state, getters) => {
+    try {
+      return getters.provision.isDone
+    } catch (e) {
+      return false
+    }
+  },
+  // has user requested provision but provision is not done yet?
+  hasRequestedProvision: (state, getters) => {
+    if (getters.provision.isDone === false) {
+      return true
+    }
+  }
 }
 
 const mutations = {
@@ -33,11 +56,59 @@ const mutations = {
 
     // save to state
     state.user = data
+  },
+  [types.SET_USER_PROVISION] (state, data) {
+    if (data.length) {
+      state.provision = data[0]
+    } else {
+      // not provisioned
+    }
   }
 }
 
 const actions = {
-  async loadUser ({getters, commit, dispatch}, showNotification = true) {
+  async provisionUser ({getters, dispatch}, showNotification = true) {
+    dispatch('setWorking', {group: 'user', type: 'provision', value: true})
+    try {
+      await dispatch('postData', {
+        name: 'provision user for demo',
+        endpoint: getters.endpoints.doProvision,
+        query: {
+          username: getters.user.username,
+          demo: 'webex',
+          version: 'v3prod'
+        },
+        showNotification
+      })
+    } catch (e) {
+      console.error('error provisioning user:', e)
+    } finally {
+      dispatch('setWorking', {group: 'user', type: 'provision', value: false})
+      // load provision data now
+      dispatch('getProvision', false)
+    }
+  },
+  async getProvision ({getters, dispatch}, showNotification = true) {
+    dispatch('setLoading', {group: 'user', type: 'provision', value: true})
+    try {
+      await dispatch('loadToState', {
+        name: 'user provision info',
+        endpoint: getters.endpoints.provision,
+        query: {
+          username: getters.user.username,
+          demo: 'webex',
+          version: 'v3prod'
+        },
+        mutation: types.SET_USER_PROVISION,
+        showNotification
+      })
+    } catch (e) {
+      console.error('error loading user provision info:', e)
+    } finally {
+      dispatch('setLoading', {group: 'user', type: 'provision', value: false})
+    }
+  },
+  async loadUser ({getters, dispatch}, showNotification = true) {
     try {
       dispatch('setLoading', {group: 'app', type: 'user', value: true})
       await dispatch('loadToState', {
@@ -55,7 +126,7 @@ const actions = {
       dispatch('setLoading', {group: 'app', type: 'user', value: false})
     }
   },
-  async saveDemoConfig ({getters, commit, dispatch}, {data, showNotification = true}) {
+  async saveDemoConfig ({getters, dispatch}, {data, showNotification = true}) {
     try {
       dispatch('setWorking', {group: 'app', type: 'user', value: true})
       await dispatch('postData', {

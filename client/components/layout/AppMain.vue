@@ -1,8 +1,7 @@
 <template>
   <div>
-    <section class="app-main" :style="[hiddenSidebarStyle]">
+    <section class="app-main">
       <div class="container is-fluid is-marginless app-content">
-        <!-- <levelbar></levelbar> -->
         <transition
         mode="out-in"
         enter-active-class="fadeIn"
@@ -17,39 +16,11 @@
 </div>
 </template>
 
-<script>
-// import Levelbar from './Levelbar'
-import { mapGetters } from 'vuex'
-
-export default {
-  computed: {
-    ...mapGetters({
-      sidebar: 'sidebar'
-    }),
-    hiddenSidebarStyle () {
-      return this.sidebar.hidden ? { 'margin-left': 0 } : null
-    }
-  },
-
-  components: {
-    // Levelbar
-  }
-}
-</script>
-
 <style lang="scss">
-// @import '~bulma/sass/utilities/initial-variables';
-// @import '~bulma/sass/utilities/derived-variables';
-@import '~bulma';
 .app-main {
-  padding-top: 50px;
-  margin-left: 220px;
+  padding-top: 40px;
+  // enable hardware acceleration
   transform: translate3d(0, 0, 0);
-
-  @include mobile() {
-    margin-left: 0;
-  }
-
 }
 
 .app-content {

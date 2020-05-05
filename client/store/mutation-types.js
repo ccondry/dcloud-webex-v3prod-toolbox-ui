@@ -16,6 +16,7 @@ export const SET_JWT_USER = 'SET_JWT_USER'
 
 // user
 export const SET_USER = 'SET_USER'
+export const SET_USER_PROVISION = 'SET_USER_PROVISION'
 
 // dcloud
 export const SET_VERTICALS = 'SET_VERTICALS'

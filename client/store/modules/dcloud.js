@@ -1,6 +1,7 @@
 import * as types from '../mutation-types'
 
 const state = {
+  session: {},
   verticals: [],
   demoConfig: {},
   instance: {}
@@ -28,9 +29,10 @@ const mutations = {
 const getters = {
   verticals: state => state.verticals,
   demoConfig: state => state.demoConfig,
-  dcloudSession: state => state.instance || {},
-  sessionId: (state, getters) => getters.dcloudSession.session,
-  datacenter: (state, getters) => getters.dcloudSession.datacenter,
+  dcloudSession: state => state.session,
+  instance: state => state.instance || {},
+  sessionId: (state, getters) => getters.instance.session,
+  datacenter: (state, getters) => getters.instance.datacenter,
   brandDemoLink (state, getters) {
     return `https://mm-brand.cxdemo.net?session=${getters.sessionId}&datacenter=${getters.datacenter}&userId=${getters.user.id}`
   },
@@ -46,6 +48,10 @@ const actions = {
       await dispatch('loadToState', {
         name: 'dcloud instance info',
         endpoint: getters.endpoints.instance,
+        query: {
+          demo: 'webex',
+          version: 'v3prod'
+        },
         mutation: types.SET_DCLOUD_INSTANCE,
         showNotification
       })
@@ -62,7 +68,12 @@ const actions = {
         name: 'dcloud session info',
         endpoint: getters.endpoints.session,
         mutation: types.SET_DCLOUD_SESSION,
-        showNotification
+        showNotification,
+        query: {
+          session: getters.sessionId,
+          datacenter: getters.datacenter,
+          userId: getters.user.id
+        }
       })
     } catch (e) {
       console.error('error loading dcloud session info', e)

@@ -1,28 +1,34 @@
 
 // determine REST URL path
 let urlPrefix = ''
+let authUrlPrefix = ''
 if (process.env.NODE_ENV === 'production') {
   // set up production endpoints path
-  urlPrefix = '/api/v1'
+  urlPrefix = '/api/v1/webex-v3prod'
+  authUrlPrefix = '/api/v1/auth'
 } else {
   // set up development endpoints path
-  // urlPrefix = 'http://localhost:3032/api/v1/auth'
+  urlPrefix = 'http://localhost:3065/api/v1/webex-v3prod'
+  authUrlPrefix = 'http://localhost:3032/api/v1/auth'
   // use production path in development
-  urlPrefix = 'https://dcloud-collab-toolbox-rtp.cxdemo.net/api/v1'
+  // urlPrefix = 'https://dcloud-collab-toolbox-rtp.cxdemo.net/api/v1'
+  // authUrlPrefix = 'https://dcloud-collab-toolbox-rtp.cxdemo.net/api/v1'
 }
 
 // set up REST URL endpoints object
 const state = {
   endpoints: {
-    login: urlPrefix + '/auth/login',
-    logout: urlPrefix + '/auth/logout',
-    user: urlPrefix + '/auth/user',
-    userDemo: urlPrefix + '/auth/user/demo',
+    login: authUrlPrefix + '/login',
+    logout: authUrlPrefix + '/logout',
+    user: authUrlPrefix + '/user',
+    userDemo: authUrlPrefix + '/user/demo',
     // get dCloud instances for this instant demo
-    instance: urlPrefix + '/webex-v3prod/instances',
+    instance: authUrlPrefix + '/instance',
     // get dCloud session ID and datacenter in for the instant demo session
-    // session: '/api/v1/webex-v3prod/instances',
-    vertical: 'https://mm.cxdemo.net/api/v1/verticals?all=true&summary=true'
+    session: 'https://mm.cxdemo.net/api/v1/sessions',
+    vertical: 'https://mm.cxdemo.net/api/v1/verticals?all=true&summary=true',
+    provision: authUrlPrefix + '/provision',
+    doProvision: urlPrefix + '/provision'
   }
 }
 

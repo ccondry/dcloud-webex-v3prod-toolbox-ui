@@ -7,6 +7,16 @@
       <app-main></app-main>
     </div>
     <!-- <footer-bar></footer-bar> -->
+    <footer class="footer" style="padding: 0; background-color: #ebebeb">
+      <div class="content">
+        <small style="padding-right: 2em;">
+          UI version {{ uiVersion }}
+        </small>
+        <small>
+          API version {{ apiVersion }}
+        </small>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -62,6 +72,8 @@ export default {
     await this.getInstance(false)
     // get dCloud session information, like phone numbers
     await this.getSession(false)
+    // get REST API version info
+    await this.getVersionInfo(false)
   },
 
   async mounted () {
@@ -73,7 +85,9 @@ export default {
       'authenticated',
       'loading',
       'endpoints',
-      'provision'
+      'provision',
+      'uiVersion',
+      'apiVersion'
     ])
   },
 
@@ -86,7 +100,8 @@ export default {
       'loadUser',
       'getInstance',
       'getSession',
-      'getProvision'
+      'getProvision',
+      'getVersionInfo'
     ])
   },
   watch: {

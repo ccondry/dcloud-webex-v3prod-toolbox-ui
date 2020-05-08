@@ -29,7 +29,8 @@ const state = {
     vertical: 'https://mm.cxdemo.net/api/v1/verticals?all=true&summary=true',
     provision: authUrlPrefix + '/provision',
     doProvision: urlPrefix + '/provision',
-    webex: authUrlPrefix + '/resource/joinWebexV3SupportRoom'
+    webex: authUrlPrefix + '/resource/joinWebexV3SupportRoom',
+    version: urlPrefix + '/version'
   }
 }
 

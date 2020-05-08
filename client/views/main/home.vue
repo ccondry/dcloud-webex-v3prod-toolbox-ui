@@ -1,8 +1,29 @@
 <template>
   <div>
-    <!-- <pre>
-      {{ dcloudSession }}
-    </pre> -->
+    
+    <div class="tile is-ancestor">
+      <div class="tile is-parent is-12">
+        <article class="tile is-child box">
+          <h1 class="title">Welcome</h1>
+          <b-field>
+            <p>
+              Welcome to the Cisco Webex Contact Center v3 Instant Demo on dCloud.
+            </p>
+          </b-field>
+          <b-field>
+            <p>
+              Click this button to get support, ask questions, and suggest
+              new features:
+            </p>
+          </b-field>
+          <b-field>
+            <button class="button is-success" @click.prevent="showSupportRoomDialog" >
+              Join Support Room
+            </button>
+          </b-field>
+        </article>
+      </div>
+    </div>
 
     <div v-if="loading.user.provision">
       <div class="tile is-ancestor">
@@ -56,6 +77,18 @@
       </div>
     </div>
     
+    <!-- user is provisioned - show agent info -->
+    <div class="tile is-ancestor" v-if="!loading.user.provision && isProvisioned">
+      <div class="tile is-parent">
+        <article class="tile is-child box is-horizontal">
+          <h1 class="title">Agents</h1>
+          <div class="content">
+            <agents :user="user" />
+          </div>
+        </article>
+      </div>
+    </div>
+    
     <!-- Demo Website config -->
     <div class="tile is-ancestor" v-if="!loading.user.provision && isProvisioned">
       <div class="tile is-parent is-vertical">
@@ -96,7 +129,10 @@
               &nbsp;
               <button class="button is-success" @click="clickGo">Go to Demo Website</button>
               &nbsp;
-              <span style="font-size: 1.3em;">Or for quick access, call {{ demoNumber }}</span>
+              <span style="font-size: 1.3em;">
+                Or for quick access, call <strong>{{ demoNumber }}</strong>
+                Ext. <strong>{{ model.queueId }}</strong>
+                </span>
               <b-field style="margin-top: 6px;">
                 <b-checkbox v-model="showMore">Show More</b-checkbox>
               </b-field>
@@ -196,13 +232,66 @@
       </div>
     </div>
 
+    <!-- user is provisioned - show agent info -->
+    <div class="tile is-ancestor" v-if="!loading.user.provision && isProvisioned">
+      <div class="tile is-parent">
+        <article class="tile is-child box is-horizontal">
+          <h1 class="title">Agents for V2 Call Flow Editor</h1>
+          <div class="content">
+            <div class="tile is-ancestor">
+              <div class="tile">
+                <div class="tile is-parent">
+                  <article class="tile is-child box">
+
+                    <p class="title">{{ supervisor.name }}</p>
+                    <p class="subtitle">{{ supervisor.role }}</p>
+                    <img :src="supervisor.picture" width="128px">
+                    <p>
+                      <strong>Username: {{ supervisor.username }}</strong>
+                      <a @click="clickCopy(supervisor.username, 'Username')">
+                        <b-icon icon="layers"></b-icon>
+                      </a>
+                    </p>
+                    <p>
+                      <strong>Password: {{ supervisor.password }}</strong>
+                      <a @click="clickCopy(supervisor.password, 'Password')">
+                        <b-icon icon="layers"></b-icon>
+                      </a>
+                    </p>
+                    <p>
+                      <strong>Extension: {{ supervisor.extension }}</strong>
+                      <a @click="clickCopy(supervisor.extension, 'Extension')">
+                        <b-icon icon="layers"></b-icon>
+                      </a>
+                    </p>
+                    <center>
+                      <b-field>
+                        <button class="button is-info" @click="clickR10Portal">
+                          Go to Webex Contact Center Portal
+                        </button>
+                      </b-field>
+                    </center>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import Agents from '../../components/agents.vue'
 
 export default {
+  components: {
+    Agents
+  },
+
   data () {
     return {
       showModal: false,
@@ -210,7 +299,8 @@ export default {
       ownerFilter: '',
       brandFilter: 'mine',
       chatReason: '',
-      showMore: false
+      showMore: false,
+      portalUrl: 'https://portal.ccone.net'
     }
   },
 
@@ -220,8 +310,29 @@ export default {
       'loadVerticals',
       'loadUser',
       'loadReasons',
-      'provisionUser'
+      'provisionUser',
+      'inviteToSupportRoom'
     ]),
+    clickR10Portal () {
+       // open agent portal in new tab
+      window.open(this.portalUrl, '_blank')
+    },
+    showSupportRoomDialog (event) {
+      // show dialog
+      this.$buefy.dialog.prompt({
+        title: 'Join the Webex Teams support room',
+        message: `What is your Webex Teams email address?`,
+        type: 'is-success',
+        confirmText: 'Join',
+        inputAttrs: {
+          placeholder: 'username@example.com',
+          value: this.user.email
+        },
+        onConfirm: (email) => {
+          this.inviteToSupportRoom({email})
+        }
+      })
+    },
     clickProvision () {
       this.provisionUser()
     },
@@ -287,6 +398,16 @@ export default {
       'hasRequestedProvision',
       'provision'
     ]),
+    supervisor () {
+      return {
+        picture: 'https://mm.cxdemo.net/static/images/cumulus/common/author3.png',
+        username: 'rbarrows' + this.user.id + '@dcloud.cisco.com',
+        password: 'C1sco12345',
+        extension: '1082' + this.user.id,
+        name: 'Rick Barrows',
+        role: 'Administrator / Agent'
+      }
+    },
     demoNumber () {
       try {
         switch (this.model.vertical) {

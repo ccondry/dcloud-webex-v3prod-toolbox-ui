@@ -4,6 +4,7 @@ import dcloud from './dcloud'
 import endpoints from './endpoints'
 import menu from './menu'
 import user from './user'
+import webex from './webex'
 
 export default {
   app,
@@ -11,5 +12,6 @@ export default {
   dcloud,
   endpoints,
   menu,
-  user
+  user,
+  webex
 }

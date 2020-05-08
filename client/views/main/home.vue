@@ -266,7 +266,7 @@
                     </p>
                     <center>
                       <b-field>
-                        <button class="button is-info" @click="clickR10Portal">
+                        <button class="button is-success" @click="clickR10Portal">
                           Go to Webex Contact Center Portal
                         </button>
                       </b-field>

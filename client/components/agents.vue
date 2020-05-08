@@ -23,7 +23,7 @@
             </p>
             <center>
               <b-field>
-                <button class="button is-info" @click="clickAgentPortal">Go to Agent Desktop</button>
+                <button class="button is-success" @click="clickAgentPortal">Go to Agent Desktop</button>
               </b-field>
             </center>
           </article>
@@ -48,7 +48,7 @@
             </p>
             <center>
               <b-field>
-                <button class="button is-info" @click="clickAdminPortal">Go to Admin Portal</button>
+                <button class="button is-success" @click="clickAdminPortal">Go to Admin Portal</button>
               </b-field>
             </center>
           </article>

@@ -65,6 +65,8 @@
 
 
 <script>
+import {mapActions} from 'vuex'
+
 export default {
   props: ['user'],
 
@@ -101,6 +103,9 @@ export default {
   },
 
   methods: {
+    ...mapActions([
+      'copyToClipboard'
+    ]),
     clickAgentPortal (e) {
       // open agent portal in new tab
       window.open(this.agentPortalUrl, '_blank')
@@ -109,27 +114,8 @@ export default {
       // open admin portal in new tab
       window.open(this.adminPortalUrl, '_blank')
     },
-    clickCopy (s, type) {
-      // copy text to clipboard
-      // const input = document.createElement('input')
-      const input = document.getElementById('copy-paste')
-      // document.body.appendChild(input)
-      input.value = s
-      input.focus()
-      input.select()
-      const result = document.execCommand('copy')
-      // input.remove
-      input.value = ''
-      // document.body.removeChild(input)
-      if (result === 'unsuccessful') {
-        // failed
-        console.error('Failed to copy text.')
-      } else {
-        this.$buefy.toast.open({
-          message: type + ' Copied to Your Clipboard',
-          queue: false
-        })
-      }
+    clickCopy (string, type) {
+      this.copyToClipboard({string, type})
     }
   }
 }

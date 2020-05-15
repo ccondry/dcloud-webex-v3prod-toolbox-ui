@@ -3,11 +3,11 @@
     <nprogress-container></nprogress-container>
     <b-loading :is-full-page="true" :active="loading.app.endpoints" :can-cancel="false"></b-loading>
     <navbar :show="true" :menu-filter.sync="menuFilter"></navbar>
-    <div v-if="authenticated && endpoints">
+    <div v-if="authenticated && endpoints" style="min-height: calc(100vh - 1.6em);">
       <app-main></app-main>
     </div>
     <!-- <footer-bar></footer-bar> -->
-    <footer class="footer" style="padding: 0; background-color: #ebebeb">
+    <footer class="footer" style="height: 1.6em; padding: 0; background-color: #ebebeb">
       <div class="content">
         <small style="padding-right: 2em;">
           UI version {{ uiVersion }}

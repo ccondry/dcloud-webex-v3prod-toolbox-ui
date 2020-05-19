@@ -1,5 +1,5 @@
 function addUrlQueryParams (endpoint, params) {
-  let url = new URL(endpoint)
+  let url = new window.URL(endpoint)
   if (params) {
     // append URL query paramenters
     Object.keys(params).forEach(key => {

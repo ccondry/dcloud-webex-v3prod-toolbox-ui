@@ -1,5 +1,7 @@
 function addUrlQueryParams (endpoint, params) {
+  console.log('addUrlQueryParams:', endpoint, params)
   let url = new window.URL(endpoint)
+  console.log('new URL object =', url)
   if (params) {
     // append URL query paramenters
     Object.keys(params).forEach(key => {
@@ -11,6 +13,7 @@ function addUrlQueryParams (endpoint, params) {
 
 async function rest (method, jwt, endpoint, query, data) {
   try {
+    console.log('REST request:', method, endpoint, query, data)
     const url = addUrlQueryParams(endpoint, query)
     console.log(method, url, data)
     let body

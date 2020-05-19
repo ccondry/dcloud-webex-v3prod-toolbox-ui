@@ -1,6 +1,6 @@
 import * as types from './mutation-types'
 import { load, put, post, httpDelete } from '../utils'
-import { Toast } from 'buefy/dist/components/toast'
+import { ToastProgrammatic as Toast } from 'buefy'
 
 export const toggleSidebar = ({ commit }, data) => {
   if (data instanceof Object) {
@@ -35,13 +35,14 @@ export const loadToState = async function ({getters, commit, dispatch}, options)
     console.log(`GET ${options.name}`, response)
     let data
     if (typeof options.transform === 'function') {
-      data = options.transform(response)
+      data = options.transform(data)
     } else {
-      data = response.data
+      data = response
     }
     commit(options.mutation, data)
     if (options.showNotification) {
       Toast.open({
+        title: 'Test',
         duration: 5000,
         message: options.success,
         type: 'is-success'
@@ -53,7 +54,7 @@ export const loadToState = async function ({getters, commit, dispatch}, options)
     // check for 401 (expired JWT)
     // console.error('e.response', e.response)
     try {
-      if (e.response.status === 401 && e.response.data.toLowerCase() === 'jwt expired') {
+      if (e.status === 401) {
         // JWT expired
         console.log('JWT expired. logging out user locally.')
         dispatch('unsetJwt')
@@ -64,6 +65,7 @@ export const loadToState = async function ({getters, commit, dispatch}, options)
       // continue with default error
     }
     Toast.open({
+      title: 'Test',
       duration: 15000,
       message: options.fail + ': ' + e.message,
       type: 'is-danger'
@@ -119,13 +121,13 @@ export const postData = async function ({getters, commit, dispatch}, options) {
     if (typeof options.transform === 'function') {
       data = options.transform(response)
     } else {
-      data = response.data
+      data = response
     }
     // commit data to state?
     if (options.mutation) {
       commit(options.mutation, data)
     }
-    return response
+    return data
   } catch (e) {
     console.log(`error during POST ${options.name}`, e)
     Toast.open({

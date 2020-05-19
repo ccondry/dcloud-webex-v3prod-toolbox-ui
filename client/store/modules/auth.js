@@ -49,14 +49,15 @@ const actions = {
       // tell server we're logging out
       const response = await post(getters.jwt, getters.endpoints.logout)
       // did they successfully log out of superuser mode?
-      if (response.status >= 200 && response.status < 300) {
-        if (response.data.jwt) {
+      if (response.ok) {
+        try {
+          const json = await response.json()
           // store new auth token in localStorage
-          dispatch('setJwt', response.data.jwt)
-          // load user data using JWT
-          // dispatch('loadUser')
+          dispatch('setJwt', json.jwt)
           dispatch('successNotification', `Successfully logged out of ${getters.user.username}`)
-        } else {
+        } catch (e) {
+          // no json
+          // const text = await response.text()
           // remove JWT
           commit(types.SET_JWT, null)
           // remove JWT from localStorage

@@ -9,72 +9,51 @@ function addUrlQueryParams (endpoint, params) {
   return url
 }
 
-export const load = async function (jwt, endpoint, query) {
+async function rest (method, jwt, endpoint, query, data) {
   try {
     const url = addUrlQueryParams(endpoint, query)
-    console.log('GET', url)
-    return window.fetch(url, {
-      method: 'GET',
+    console.log(method, url, data)
+    let body
+    if (data) {
+      body = JSON.stringify(data)
+    }
+    const response = await window.fetch(url, {
+      method,
       headers: {
         Authorization: 'Bearer ' + jwt
-      }
+      },
+      body
     })
+    if (response.ok) {
+      const text = await response.text()
+      try {
+        const json = JSON.parse(text)
+        return json
+      } catch (e) {
+        // not json
+        return text
+      }
+    } else {
+      const text = await response.text()
+      throw Error(`REST error ${response.status} ${response.statusText}: ${text}`)
+    }
   } catch (e) {
     throw e
   }
+}
+
+export const load = async function (jwt, endpoint, query) {
+  return rest('GET', jwt, endpoint, query)
 }
 
 export const put = async function (jwt, endpoint, query, data) {
-  try {
-    const url = addUrlQueryParams(endpoint, query)
-    console.log('PUT', url, data)
-    let body
-    if (data) {
-      body = JSON.stringify(data)
-    }
-    return window.fetch(url, {
-      method: 'PUT',
-      headers: {
-        Authorization: 'Bearer ' + jwt
-      },
-      body
-    })
-  } catch (e) {
-    throw e
-  }
+  return rest('PUT', jwt, endpoint, query, data)
 }
 
 export const post = async function (jwt, endpoint, query, data) {
-  try {
-    const url = addUrlQueryParams(endpoint, query)
-    console.log('POST', url, data)
-    let body
-    if (data) {
-      body = JSON.stringify(data)
-    }
-    return window.fetch(url, {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + jwt
-      },
-      body
-    })
-  } catch (e) {
-    throw e
-  }
+  return rest('POST', jwt, endpoint, query, data)
 }
 
 export const httpDelete = async function (jwt, endpoint, query) {
-  try {
-    const url = addUrlQueryParams(endpoint, query)
-    console.log('DELETE', url)
-    return window.fetch(url, {
-      method: 'DELETE',
-      headers: {
-        Authorization: 'Bearer ' + jwt
-      }
-    })
-  } catch (e) {
-    throw e
-  }
+  return rest('DELETE', jwt, endpoint, query)
 }

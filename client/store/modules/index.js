@@ -5,6 +5,7 @@ import endpoints from './endpoints'
 import menu from './menu'
 import user from './user'
 import webex from './webex'
+import notifications from './notifications'
 
 export default {
   app,
@@ -13,5 +14,6 @@ export default {
   endpoints,
   menu,
   user,
-  webex
+  webex,
+  notifications
 }

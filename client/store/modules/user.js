@@ -120,8 +120,8 @@ const actions = {
         showNotification
       })
     } catch (e) {
-      console.error('error loading defaults', e)
-      dispatch('errorNotification', {title: 'Failed to load user details', error: e})
+      console.error('error loading user', e)
+      dispatch('errorNotification', {title: 'Failed to load user details', message: e.message})
     } finally {
       dispatch('setLoading', {group: 'app', type: 'user', value: false})
     }
@@ -138,8 +138,8 @@ const actions = {
         showNotification
       })
     } catch (e) {
-      console.error('error loading defaults', e)
-      dispatch('errorNotification', {title: 'Failed to load user details', error: e})
+      console.error('error saving demo config', e)
+      dispatch('errorNotification', {title: 'Failed to save demo config', error: e})
     } finally {
       dispatch('setWorking', {group: 'app', type: 'user', value: false})
     }

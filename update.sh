@@ -24,7 +24,7 @@ else
         if [ $? -eq 0 ]; then
           echo "npm build successful"
           echo "copying new web files"
-          cp -rf dist/* /var/www/html/webex-v3prod/
+          cp -rf dist/* /var/www/toolbox/webex-v3prod/
         else
           echo "npm failed to run build script"
         fi

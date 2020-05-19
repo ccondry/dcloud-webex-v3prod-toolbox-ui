@@ -67,13 +67,12 @@ export const post = async function (jwt, endpoint, query, data) {
 export const httpDelete = async function (jwt, endpoint, query) {
   try {
     const url = addUrlQueryParams(endpoint, query)
-    console.log('DELETE', url, data)
+    console.log('DELETE', url)
     return window.fetch(url, {
       method: 'DELETE',
       headers: {
         Authorization: 'Bearer ' + jwt
-      },
-      body: JSON.stringify(data)
+      }
     })
   } catch (e) {
     throw e

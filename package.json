@@ -34,7 +34,6 @@
   },
   "homepage": "https://github.com/ccondry/webex-v3prod-toolbox-ui#README",
   "dependencies": {
-    "axios": "^0.18.0",
     "buefy": "^0.8.6",
     "bulma": "^0.7.4",
     "mdi": "^2.2.43",

@@ -4,8 +4,8 @@ let urlPrefix = ''
 let authUrlPrefix = ''
 if (process.env.NODE_ENV === 'production') {
   // set up production endpoints path
-  urlPrefix = '/api/v1/webex-v3prod'
-  authUrlPrefix = '/api/v1/auth'
+  urlPrefix = window.location.origin + '/api/v1/webex-v3prod'
+  authUrlPrefix = window.location.origin + '/api/v1/auth'
 } else {
   // set up development endpoints path
   urlPrefix = 'http://localhost:3065/api/v1/webex-v3prod'

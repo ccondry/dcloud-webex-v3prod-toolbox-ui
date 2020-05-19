@@ -28,12 +28,16 @@ export const put = async function (jwt, endpoint, query, data) {
   try {
     const url = addUrlQueryParams(endpoint, query)
     console.log('PUT', url, data)
+    let body
+    if (data) {
+      body = JSON.stringify(data)
+    }
     return window.fetch(url, {
       method: 'PUT',
       headers: {
         Authorization: 'Bearer ' + jwt
       },
-      body: JSON.stringify(data)
+      body
     })
   } catch (e) {
     throw e
@@ -44,12 +48,16 @@ export const post = async function (jwt, endpoint, query, data) {
   try {
     const url = addUrlQueryParams(endpoint, query)
     console.log('POST', url, data)
+    let body
+    if (data) {
+      body = JSON.stringify(data)
+    }
     return window.fetch(url, {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + jwt
       },
-      body: JSON.stringify(data)
+      body
     })
   } catch (e) {
     throw e

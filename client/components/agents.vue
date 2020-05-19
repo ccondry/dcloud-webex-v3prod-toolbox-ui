@@ -48,7 +48,10 @@
             </p>
             <center>
               <b-field>
-                <button class="button is-success" @click="clickAdminPortal">Go to Admin Portal</button>
+                <button class="button is-success" @click="clickWebexAdminPortal">Go to Control Hub</button>
+              </b-field>
+              <b-field>
+                <button class="button is-success" @click="clickCjpAdminPortal">Go to Management Portal</button>
               </b-field>
             </center>
           </article>
@@ -73,8 +76,9 @@ export default {
   data () {
     return {
       portalUrl: 'https://portal.ccone.net',
-      adminPortalUrl: 'https://admin.webex.com/overview',
+      webexAdminPortalUrl: 'https://admin.webex.com/overview',
       agentPortalUrl: 'https://agent.cjp.cisco.com/ada-ws/home',
+      cjpAdminPortalUrl: 'https://portal.cjp.cisco.com/portal/home',
       clipboard: 'initial-value'
     }
   },
@@ -110,9 +114,13 @@ export default {
       // open agent portal in new tab
       window.open(this.agentPortalUrl, '_blank')
     },
-    clickAdminPortal (e) {
+    clickWebexAdminPortal (e) {
       // open admin portal in new tab
-      window.open(this.adminPortalUrl, '_blank')
+      window.open(this.webexAdminPortalUrl, '_blank')
+    },
+    clickCjpAdminPortal (e) {
+      // open admin portal in new tab
+      window.open(this.cjpAdminPortalUrl, '_blank')
     },
     clickCopy (string, type) {
       this.copyToClipboard({string, type})

@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/dcloud-collab/chat-toolbox-ui.git"
+    "url": "git+https://github.com/ccondry/webex-v3prod-toolbox-ui.git"
   },
   "keywords": [
     "cisco",
@@ -30,9 +30,9 @@
   "author": "Coty Condry",
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/dcloud-collab/chat-toolbox-ui/issues"
+    "url": "https://github.com/ccondry/webex-v3prod-toolbox-ui/issues"
   },
-  "homepage": "https://gitlab.com/dcloud-collab/chat-toolbox-ui#README",
+  "homepage": "https://github.com/ccondry/webex-v3prod-toolbox-ui#README",
   "dependencies": {
     "awesome-phonenumber": "^2.7.0",
     "axios": "^0.18.0",

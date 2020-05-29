@@ -23,6 +23,7 @@ async function rest (method, jwt, endpoint, query, data) {
     const response = await window.fetch(url, {
       method,
       headers: {
+        'Content-Type': 'application/json',
         Authorization: 'Bearer ' + jwt
       },
       body

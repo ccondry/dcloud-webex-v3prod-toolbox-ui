@@ -25,7 +25,10 @@ const actions = {
         console.log('successfully added user to Webex support room.')
         // show success message to user
         if (showNotification) {
-          dispatch('successNotification', 'Successfully added you to the Webex Teams support room.')
+          dispatch('successNotification', {
+            title: 'Success',
+            message: 'Successfully added you to the Webex Teams support room.'
+          })
         }
       } else if (response.status === 401) {
         // JWT expired

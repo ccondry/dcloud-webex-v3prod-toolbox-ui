@@ -140,7 +140,7 @@
                 <div class="field">
                   <div class="field">
                     <b-radio v-model="brandFilter"
-                    v-if="user.admin"
+                    v-if="user.admin || user.suJwt"
                     native-value="all">Show all verticals</b-radio>
                   </div>
                   <div class="field">
@@ -178,7 +178,7 @@
           <!-- /Brand -->
 
           <!-- Advanced -->
-          <b-collapse class="content card" :open="false" v-if="user.admin">
+          <b-collapse class="content card" :open="false" v-if="user.admin || user.suJwt">
             <div slot="trigger" slot-scope="props" class="card-header">
               <p class="card-header-title">Admin Configuration</p>
               <a class="card-header-icon">

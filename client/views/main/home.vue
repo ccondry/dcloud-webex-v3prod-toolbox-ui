@@ -91,7 +91,7 @@
     
     <!-- Demo Website config -->
     <div class="tile is-ancestor" v-if="!loading.user.provision && isProvisioned">
-      <div class="tile is-parent is-vertical">
+      <div class="tile is-parent">
         <article class="tile is-child box">
 
           <!-- Brand -->

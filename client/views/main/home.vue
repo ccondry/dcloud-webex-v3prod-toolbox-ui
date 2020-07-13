@@ -336,23 +336,19 @@ export default {
     clickProvision () {
       this.provisionUser()
     },
-    async confirmSaveDemoConfig ({data}) {
-      console.log('confirmSaveDemoConfig', data)
-      await this.saveDemoConfig({data})
-      await this.loadUser(false)
-    },
-    async clickSave () {
+    async verticalChanged (e) {
+      // user changed vertical selection
+      // console.log('verticalChanged to ', e.target.value)
+      console.log('verticalChanged to ', this.model.vertical)
       try {
-        // copy model to a local var
-        const data = JSON.parse(JSON.stringify(this.model))
-        // remove empty strings from the data, so that those values are not unset on server side
-        for (const key of Object.keys(data)) {
-          if (data[key] === '') {
-            delete data[key]
+        // update only the vertical on the server
+        await this.saveDemoConfig({
+          data: {
+            vertical: this.model.vertical
           }
-        }
-        // confirm with user and save the data to the server
-        this.confirmSaveDemoConfig({data})
+        })
+        // refresh user data in state from server now
+        await this.loadUser(false)
       } catch (e) {
         // failed to save data
         console.log('failed to save demo configuration ', e.message)
@@ -362,6 +358,20 @@ export default {
         })
       }
     },
+    async clickSave () {
+      // admin clicked save button in advanced config form
+      // save all data for admins who can see the advanced form
+      // copy model to a local var
+      const data = JSON.parse(JSON.stringify(this.model))
+      // remove empty strings from the data, so that those values are not unset on server side
+      for (const key of Object.keys(data)) {
+        if (data[key] === '') {
+          delete data[key]
+        }
+      }
+      // save the data on the server
+      await this.saveDemoConfig({data})
+    },
     updateCache (data) {
       console.log('home.vue updateCache:', data)
       // copy state data to local data
@@ -370,11 +380,6 @@ export default {
       } catch (e) {
         console.error('failed to updateCache on home.vue - incoming data was', data, e)
       }
-    },
-    verticalChanged (e) {
-      console.log('vertical changed to', e.target.value)
-      // save
-      this.clickSave()
     },
     clickGo (e) {
       console.log('clicked go button')
@@ -519,12 +524,17 @@ export default {
       this.updateCache(val.demo[this.demoConfigId])
     },
     vertical (val) {
+      console.log('vertical changed to', val)
       const selectedVertical = this.sortedBrands.find(v => {
         return v.id === val
       })
+      console.log('selectedVertical is', val)
       // is this selected vertical owned by someone else?
-      if (selectedVertical && selectedVertical.owner !== 'system' &&
-      selectedVertical.owner !== this.user.username) {
+      if (
+        selectedVertical &&
+        selectedVertical.owner !== 'system' &&
+        selectedVertical.owner !== this.user.username
+      ) {
         // selected vertical owned by a user that is not this user
         this.brandFilter = 'other'
         this.ownerFilter = selectedVertical.owner

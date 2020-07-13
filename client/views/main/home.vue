@@ -188,7 +188,7 @@
             <div class="card-content" v-if="loading.dcloud.vertical">
               <b-loading :is-full-page="false" :active="loading.dcloud.vertical" :can-cancel="false"></b-loading>
             </div>
-            <div class="card-content" v-else>
+            <div class="card-content" v-if="!loading.dcloud.vertical">
               <b-field label="Vertical ID">
                 <b-input v-model="model.vertical"></b-input>
               </b-field>

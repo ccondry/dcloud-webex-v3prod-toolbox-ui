@@ -8,11 +8,11 @@ if (process.env.NODE_ENV === 'production') {
   authUrlPrefix = window.location.origin + '/api/v1/auth'
 } else {
   // set up development endpoints path
-  urlPrefix = 'http://localhost:3065/api/v1/webex-v3prod'
-  authUrlPrefix = 'http://localhost:3032/api/v1/auth'
+  // urlPrefix = 'http://localhost:3065/api/v1/webex-v3prod'
+  // authUrlPrefix = 'http://localhost:3032/api/v1/auth'
   // use production path in development
-  // urlPrefix = 'https://dcloud-collab-toolbox-rtp.cxdemo.net/api/v1'
-  // authUrlPrefix = 'https://dcloud-collab-toolbox-rtp.cxdemo.net/api/v1'
+  urlPrefix = 'https://dcloud-collab-toolbox-rtp.cxdemo.net/api/v1/webex-v3prod'
+  authUrlPrefix = 'https://dcloud-collab-toolbox-rtp.cxdemo.net/api/v1/auth'
 }
 
 // set up REST URL endpoints object

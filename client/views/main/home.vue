@@ -176,9 +176,8 @@
             </div>
           </b-collapse>
           <!-- /Brand -->
-
           <!-- Advanced -->
-          <b-collapse class="content card" :open="false" v-if="user.admin || user.suJwt">
+          <b-collapse class="content card" :open="false" v-if="user.admin || isSwitchUser">
             <div slot="trigger" slot-scope="props" class="card-header">
               <p class="card-header-title">Admin Configuration</p>
               <a class="card-header-icon">
@@ -401,7 +400,8 @@ export default {
       'dcloudSession',
       'isProvisioned',
       'hasRequestedProvision',
-      'provision'
+      'provision',
+      'isSwitchUser'
     ]),
     supervisor () {
       return {

@@ -29,6 +29,9 @@ const getters = {
     if (getters.provision.isDone === false) {
       return true
     }
+  },
+  isSwitchUser: (state, getters) => {
+    return typeof getters.jwtUser.suJwt === 'string'
   }
 }
 

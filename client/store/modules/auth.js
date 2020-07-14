@@ -50,6 +50,8 @@ const actions = {
       const response = await post(getters.jwt, getters.endpoints.logout)
       // store new auth token in localStorage
       dispatch('setJwt', response.jwt)
+      // get new user details
+      dispatch('loadUser')
       dispatch('successNotification', `Successfully logged out of ${getters.user.username}`)
     } catch (e) {
       console.log(e.message)

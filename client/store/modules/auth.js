@@ -48,28 +48,18 @@ const actions = {
     try {
       // tell server we're logging out
       const response = await post(getters.jwt, getters.endpoints.logout)
-      // did they successfully log out of superuser mode?
-      if (response.ok) {
-        try {
-          const json = await response.json()
-          // store new auth token in localStorage
-          dispatch('setJwt', json.jwt)
-          dispatch('successNotification', `Successfully logged out of ${getters.user.username}`)
-        } catch (e) {
-          // no json
-          // const text = await response.text()
-          // remove JWT
-          commit(types.SET_JWT, null)
-          // remove JWT from localStorage
-          window.localStorage.removeItem('jwt')
-          // remove user from state
-          commit(types.SET_JWT_USER, {})
-        }
-      } else {
-        dispatch('errorNotification', `Failed to log out of ${getters.user.username}`)
-      }
+      // store new auth token in localStorage
+      dispatch('setJwt', response.jwt)
+      dispatch('successNotification', `Successfully logged out of ${getters.user.username}`)
     } catch (e) {
       console.log(e.message)
+      dispatch('errorNotification', `Failed to log out of ${getters.user.username}`)
+      // remove JWT
+      commit(types.SET_JWT, null)
+      // remove JWT from localStorage
+      window.localStorage.removeItem('jwt')
+      // remove user from state
+      commit(types.SET_JWT_USER, {})
     }
   },
   async checkLogin ({getters, dispatch, commit, rootState}) {

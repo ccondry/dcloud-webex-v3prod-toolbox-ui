@@ -62,7 +62,7 @@ const mutations = {
   },
   [types.SET_USER_PROVISION] (state, data) {
     if (data.length) {
-      state.provision = data[0]
+      state.provision = data[0].demo['webex-v3prod']
     } else {
       // not provisioned
     }
